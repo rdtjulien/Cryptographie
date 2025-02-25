@@ -10,6 +10,11 @@ except Exception as e:
     print("Cannot connect to the server:", e)
 print("Connected")
 
+message1 = "hello worldé"
+message1 = list(message1)
+print(message1)
+
+
 message = 'task shift encode 6'
 length_string = int(len(message))
 bytes_val = length_string.to_bytes(2,'big')
@@ -25,5 +30,4 @@ print(f"réponse: {reponse.decode()}")
 sock.close()
 #print(bytes(message.encode()))
 
-#Ceci est un test de commit pull push git ta mère salut
 
