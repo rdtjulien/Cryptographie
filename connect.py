@@ -33,16 +33,20 @@ recode = []
 
 for i in message1:
     tim = int.from_bytes(i, 'big')
+    # Mettre opérations cryptage ici
     c = tim.to_bytes(4,'big')
     recode.append(c)
 print(recode)
 
 #transformer en Int
+
+
+
 #faire les manipulations sur les INT
 #re transformer en Byte
 
 #mettre en forme le message et transmettre
-
+"""""
 message = 'task shift encode 6'
 length_string = int(len(message))
 bytes_val = length_string.to_bytes(2,'big')
@@ -57,5 +61,5 @@ print(f"réponse: {reponse.decode()}")
 
 sock.close()
 #print(bytes(message.encode()))
-
+"""
 
