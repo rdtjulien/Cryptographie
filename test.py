@@ -7,7 +7,6 @@ for i in message1:
     temp = i.encode('utf-8')
     encode.append(temp)
 message1 = encode 
-print(message1)
 
      
 tim = 0
@@ -18,5 +17,21 @@ for i in message1:
     c = tim.to_bytes(4,'big')
     recode.append(c)
 
-print(recode)
+r = []
+x = 0
+for i in recode:
+    x = int.from_bytes(i, 'big')
+    r.append(x)
 
+print(r)
+
+temp = []
+for i in r:
+    z = i.to_bytes(4,'big')
+    temp.append(z)
+r = temp
+
+new_message = ""
+for i in r:
+    new_message += str(i)
+print(new_message)
