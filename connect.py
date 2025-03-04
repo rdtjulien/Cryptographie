@@ -54,3 +54,5 @@ print(f"réponse: {reponse.decode("utf-8")}")
 toc = ornithorynque.perf_counter()
 print(f"{toc - tic:0.4f} seconds")
 sock.close
+
+
