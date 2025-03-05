@@ -36,7 +36,7 @@ def manip_int(message1):
     k = 0
 
     for i in message1:
-        x = i << k
+        x = i + k
         temp.append(x)
     print(f"ManipInt : \n{temp}")
     return temp
@@ -62,3 +62,6 @@ def encapsulation(isc, m, bytes_val, message):
     message_trans = f'{isc}{m}{bytes_val}{message}'
     print(f"message: \n{message_trans}")
     return message_trans
+
+#def response():
+

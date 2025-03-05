@@ -14,45 +14,49 @@ except Exception as e:
 print("Connected")
 
 #Partie Tranfo mot en byte
-ISC = "ISC"
-M = 't'
+ISC = "ISC".encode("utf-8").hex().upper()
+M = 's'.encode("utf-8").hex().upper()
 
 # entrer le texte qu'on veut
 print("mot de base")
-#message1 = input("Message: ")
-message = "hello"
-message1 = message
-print(message1)
+#message = "hello"
+message = "task shift encode 6"
+print(message)
 
 #définir taille du message + Hex
 bytes_val = shift.taille_message(message)
 
 # transforme en byte char by char
-message1 = shift.byte_to_char(message)
+message = shift.byte_to_char(message)
 
 #transformer en Int
-message1 = shift.trans_to_int(message1)
+message = shift.trans_to_int(message)
 
 #faire les manipulations sur les INT
-message1 = shift.manip_int(message1)
+message = shift.manip_int(message)
 
 #re transformer en Byte
-message1 = shift.re_trans_to_byte(message1)
+message = shift.re_trans_to_byte(message)
 
 #Transfo en Hex pour le bon format de transmission
-message1 = shift.trans_byte_to_hex(message1)
+message = shift.trans_byte_to_hex(message)
 
 #mettre en forme le message et transmettre (encapsuler)
-message_trans = shift.encapsulation(ISC, M, bytes_val, message1)
+message_trans = shift.encapsulation(ISC, M, bytes_val, message)
+
+#Transformation en bytes
+message_trans = bytes.fromhex(message_trans)
+print(message_trans)
 
 #Transmission Serveur
-sock.send(message_trans.encode())
+sock.send(message_trans)
 
 tic = ornithorynque.perf_counter()
 reponse = sock.recv(1024)
 print(f"réponse: {reponse.decode("utf-8")}")
+reponse = sock.recv(1024)
+print(f"réponse: {reponse.decode("utf-8")}")
 toc = ornithorynque.perf_counter()
 print(f"{toc - tic:0.4f} seconds")
-sock.close
 
-
+sock.close()

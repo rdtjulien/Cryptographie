@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 def vigenere_encrypt_ascii(text, key):
     encrypted_text = []
     key_length = len(key)
