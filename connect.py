@@ -1,62 +1,46 @@
 import socket
-import time as ornithorynque
+import send_message
 import shift
+import time
 
-#Partie connection serveur
+#Fonction réponse
+def reponse():
+    data = sock.recv(1024)
+    reponse = data.decode('utf-8').strip()
+    reponse = reponse.replace('\x00', '')
+
+    if reponse.startswith("ISCs") or reponse.startswith("ISCt"):
+        reponse = reponse[5:].strip()
+    
+    print(f"Réponse serveur : {reponse}")
+    return reponse
+
+# Partie connection serveur
 PORT = 6000
 ADDRESS = 'vlbelintrocrypto.hevs.ch'
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
     sock.connect((ADDRESS, PORT))
+    print("Connected")
 except Exception as e:
-    print("Cannot connect to the server:", e)
-print("Connected")
+    print("Cannot connect to the server")
 
-#Partie Tranfo mot en byte
-ISC = "ISC".encode("utf-8").hex().upper()
-M = 's'.encode("utf-8").hex().upper()
+M = b's'
+TASK = "shift"
+TYPE = "encode"
+message = f"task {TASK} {TYPE} 6"
+#message = f"test"
 
-# entrer le texte qu'on veut
-print("mot de base")
-#message = "hello"
-message = "task shift encode 6"
-print(message)
+encoded_message = send_message.encode_message(M, message)
 
-#définir taille du message + Hex
-bytes_val = shift.taille_message(message)
-
-# transforme en byte char by char
-message = shift.byte_to_char(message)
-
-#transformer en Int
-message = shift.trans_to_int(message)
-
-#faire les manipulations sur les INT
-message = shift.manip_int(message)
-
-#re transformer en Byte
-message = shift.re_trans_to_byte(message)
-
-#Transfo en Hex pour le bon format de transmission
-message = shift.trans_byte_to_hex(message)
-
-#mettre en forme le message et transmettre (encapsuler)
-message_trans = shift.encapsulation(ISC, M, bytes_val, message)
-
-#Transformation en bytes
-message_trans = bytes.fromhex(message_trans)
-print(message_trans)
-
-#Transmission Serveur
-sock.send(message_trans)
-
-tic = ornithorynque.perf_counter()
-reponse = sock.recv(1024)
-print(f"réponse: {reponse.decode("utf-8")}")
-reponse = sock.recv(1024)
-print(f"réponse: {reponse.decode("utf-8")}")
-toc = ornithorynque.perf_counter()
-print(f"{toc - tic:0.4f} seconds")
+if(M == b't'):
+    sock.send(encoded_message) 
+    reponse()
+else:
+    if(TASK == "shift" and TYPE == "encode"):
+        shift.encode(sock, reponse, encoded_message)
+    else:
+        shift.decode(sock, reponse, encoded_message)
 
 sock.close()

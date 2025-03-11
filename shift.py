@@ -1,67 +1,48 @@
-#définir taille du message + Hex
-def taille_message(message: str):
-    length_string = int(len(message))
-    bytes_val = length_string.to_bytes(2,'big')
-    bytes_val = bytes_val.hex().upper()
-    print(f"LongueurMessageHex : \n{bytes_val}")
-    return bytes_val
+import re
+import send_message
 
-#transforme en byte char by char
-def byte_to_char(message1: str):
+#Récupère le k
+def shift_key(reponse: str):
+    numbers = re.findall(r'\d+', reponse)
+    return int("".join(numbers))
+
+#Encode le message
+def trans_shift(reponse: str, k: int):
     temp = []
-    encode = ""
-
-    message1 = list(message1)
-    for i in message1:
-        encode = i.encode('utf-8')
-        temp.append(encode)
-    print(f"transfoChar : \n{temp}")
-    temp
+    for i in reponse:
+        i = ord(i) + int(k)
+        temp.append(chr(i))
+    temp = ''.join(temp)
     return temp
 
-#transformer en Int
-def trans_to_int(message1: str):
-    list_to_int = 0
-    modif_message = []
-
-    for i in message1:
-        list_to_int = int.from_bytes(i,'big')
-        modif_message.append(list_to_int)
-    print(f"ListInt : \n{modif_message}")
-    return modif_message
-
-#faire les manipulations sur les INT
-def manip_int(message1):
+#Decoder le message
+def shift_encode(reponse: str):
     temp = []
-    k = 0
+    for i in reponse:
+        i = ord(i) - 6
+        temp.append(chr(i))
+    return ''.join(temp)
 
-    for i in message1:
-        x = i + k
-        temp.append(x)
-    print(f"ManipInt : \n{temp}")
-    return temp
+#Envoie au serveur pour l'encodage
+def encode(sock, reponse_func, encoded_message):
+    sock.send(encoded_message)
+    k = reponse_func()
+    k = shift_key(k)
+    serv_reponse = reponse_func()
+    shift_message = trans_shift(serv_reponse, int(k))
+    print(f"Shift message: {shift_message}")
+    shift_message = send_message.encode_message(b's', shift_message)
+    sock.send(shift_message)
+    serv_reponse = reponse_func()
 
-#re transformer en Byte
-def re_trans_to_byte(message1: str):
-    temp = []
-    for i in message1:
-        c = i.to_bytes(4,'big')
-        temp.append(c)
-    print(f"ReTransfoByte : \n{temp}")    
-    return temp
-
-#Transfo en Hex pour le bon format de transmission
-def trans_byte_to_hex(message1: str):
-    full_data = b''.join(message1)
-    message1 = full_data.hex().upper()
-    print(f"trandsfoByteToHex : \n{message1}")
-    return message1
-
-#mettre en forme le message et transmettre (encapsuler)
-def encapsulation(isc, m, bytes_val, message):
-    message_trans = f'{isc}{m}{bytes_val}{message}'
-    print(f"message: \n{message_trans}")
-    return message_trans
-
-#def response():
+#Envoie au serveur pour le decodage
+def decode(sock, reponse_func, encoded_message):
+    sock.send(encoded_message)
+    reponse_func()
+    message_encoder = reponse_func()
+    shift_message = shift_encode(message_encoder)
+    print(f"Shift message: {shift_message}")
+    shift_message = send_message.encode_message(b's', shift_message)
+    sock.send(shift_message)
+    reponse_func()
 
