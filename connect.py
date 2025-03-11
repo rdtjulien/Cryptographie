@@ -2,6 +2,8 @@ import socket
 import send_message
 import shift
 import time
+import Vigenere
+import rsa
 
 #Fonction réponse
 def reponse():
@@ -10,7 +12,7 @@ def reponse():
     reponse = reponse.replace('\x00', '')
 
     if reponse.startswith("ISCs") or reponse.startswith("ISCt"):
-        reponse = reponse[5:].strip()
+        reponse = reponse[5:]
     
     print(f"Réponse serveur : {reponse}")
     return reponse
@@ -27,20 +29,31 @@ except Exception as e:
     print("Cannot connect to the server")
 
 M = b's'
-TASK = "shift"
+TASK = "RSA"
 TYPE = "encode"
-message = f"task {TASK} {TYPE} 6"
-#message = f"test"
+message = f"task {TASK} {TYPE} 20"
+#message = "test"
 
 encoded_message = send_message.encode_message(M, message)
 
 if(M == b't'):
-    sock.send(encoded_message) 
+    sock.send(encoded_message)
     reponse()
 else:
     if(TASK == "shift" and TYPE == "encode"):
         shift.encode(sock, reponse, encoded_message)
-    else:
+    elif(TASK == "shift" and TYPE == "decode"):
         shift.decode(sock, reponse, encoded_message)
+    elif(TASK == "vigenere" and TYPE == "encode"):
+        Vigenere.encode(sock, reponse, encoded_message)
+    elif(TASK == "RSA" and TYPE == "encode"):
+        sock.send(encoded_message)
+        m = reponse()
+        mod = m.split('=')
+        n = mod[1]
+        e = mod[2]
+        print(n[:-3])
+        print(e)
+        text = reponse()
 
 sock.close()
