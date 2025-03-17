@@ -5,9 +5,6 @@ def byte_message(message: str):
 
     return b''.join(new_message)
 
-print(byte_message("abç"))
-
-
 def encode_message(m:bytes, message: str):
     prefix = b'ISC'
     length = len(message).to_bytes(2, 'big')

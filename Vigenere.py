@@ -20,12 +20,7 @@ def encrypt_vigenere(msg: str, key: str):
     for i in range(len(msg)):
         char = msg[i]
         key_char = key[i]
-        if char.isupper() and key_char.isalpha():
-            encrypted_char = chr((ord(char) + ord(key_char) - 2 * ord('A')) % 26 + ord('A'))
-        elif char.islower() and key_char.isalpha():
-            encrypted_char = chr((ord(char) + ord(key_char) - 2 * ord('a')) % 26 + ord('a'))
-        else:
-            encrypted_char = char
+        encrypted_char = chr(ord(char)+ord(key_char))
         encrypted_text.append(encrypted_char)
 
     return "".join(encrypted_text)

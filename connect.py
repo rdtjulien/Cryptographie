@@ -29,9 +29,9 @@ except Exception as e:
     print("Cannot connect to the server")
 
 M = b's'
-TASK = "vigenere"
+TASK = "shift"
 TYPE = "encode"
-LENGTH = 2
+LENGTH = 20
 message = f"task {TASK} {TYPE} {LENGTH}"
 #message = "test"
 

@@ -10,7 +10,7 @@ def shift_key(reponse: str):
 def trans_shift(reponse: str, k: int):
     temp = []
     for i in reponse:
-        i = ord(i) + int(k)
+        i = ord(i) + k
         temp.append(chr(i))
     temp = ''.join(temp)
     return temp
@@ -33,7 +33,7 @@ def encode(sock, reponse_func, encoded_message):
     print(f"Shift message: {shift_message}")
     shift_message = send_message.encode_message(b's', shift_message)
     sock.send(shift_message)
-    serv_reponse = reponse_func()
+    serv_reponse = reponse_func() 
 
 #Envoie au serveur pour le decodage
 def decode(sock, reponse_func, encoded_message):
