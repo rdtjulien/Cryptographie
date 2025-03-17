@@ -2,8 +2,10 @@ def byte_message(message: str):
     new_message = []
     for i in message:
         new_message.append(ord(i).to_bytes(4,'big'))
-    
+
     return b''.join(new_message)
+
+print(byte_message("abç"))
 
 
 def encode_message(m:bytes, message: str):

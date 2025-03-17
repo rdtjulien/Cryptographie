@@ -23,8 +23,6 @@ def shift_encode(reponse: str):
         temp.append(chr(i))
     return ''.join(temp)
 
-print(trans_shift("LDL.", 10))
-
 #Envoie au serveur pour l'encodage
 def encode(sock, reponse_func, encoded_message):
     sock.send(encoded_message)
@@ -35,7 +33,6 @@ def encode(sock, reponse_func, encoded_message):
     print(f"Shift message: {shift_message}")
     shift_message = send_message.encode_message(b's', shift_message)
     sock.send(shift_message)
-    print(f"Shift message: {shift_message}")
     serv_reponse = reponse_func()
 
 #Envoie au serveur pour le decodage
@@ -48,5 +45,3 @@ def decode(sock, reponse_func, encoded_message):
     shift_message = send_message.encode_message(b's', shift_message)
     sock.send(shift_message)
     reponse_func()
-
-#dict()

@@ -29,9 +29,10 @@ except Exception as e:
     print("Cannot connect to the server")
 
 M = b's'
-TASK = "RSA"
+TASK = "vigenere"
 TYPE = "encode"
-message = f"task {TASK} {TYPE} 20"
+LENGTH = 2
+message = f"task {TASK} {TYPE} {LENGTH}"
 #message = "test"
 
 encoded_message = send_message.encode_message(M, message)
