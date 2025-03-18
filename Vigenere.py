@@ -35,10 +35,3 @@ def encode(sock, reponse_func, encoded_message):
     vigenere_message = send_message.encode_message(b's', vigenere_message)
     sock.send(vigenere_message)
     serv_reponse = reponse_func()
-
-
-key = "You are asked to encode the text in the following message with the shift-key CLE"
-message = "LE CHIFFRE DE VIGENERE".replace(" ","")
-
-print(get_key(key))
-print(encrypt_vigenere(message,key))

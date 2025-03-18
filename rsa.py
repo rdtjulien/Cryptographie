@@ -1,40 +1,51 @@
 import send_message
 
-def fast_power(base, power, MOD):
-    result = 1
-    while power > 0:
-        if power % 2 == 1:
-            result = (result * base) % MOD
+def power(base, expo, m):
+   return pow(base,expo,m)
 
-        power = power // 2
-        base = (base * base) % MOD
+def recup_key(serv_msg):
+    number = serv_msg
+    mod = number.split('=')
+    n = mod[1]
+    n = n[:-3]
+    e = mod[2]
+    return e, n
 
-    return result
+def encode_RSA(serv_mes: str, e, n):
+    temp = []
+    for i in serv_mes:
+        i = ord(i)
+        i = power(i, int(e), int(n))
+        temp.append(i)
+    return temp
 
+def byte_message(message: str):
+    new_message = []
+    for i in message:
+        new_message.append(i.to_bytes(4,'big'))
 
-serv = "You are asked to encode the text in the following message with the key n=1399596323, e=2760739"
-serv_mes = "es feuilles dentées"
+    return b''.join(new_message)
 
-number = serv
-mod = number.split('=')
-n = mod[1]
-n = n[:-3]
-e = mod[2]
+def encode_message_RSA(m:bytes, message: str, length: int):
+    prefix = b'ISC'
+    length = length.to_bytes(2, 'big')
+    new_message = byte_message(message)
 
+    return prefix + m + length + new_message
 
-print(f"n = {n}")
-print(f"e = {e}")
+def encrypt(sock, reponse_func, encoded_message):
+    sock.send(encoded_message)
+    m = reponse_func()
+    e, n = recup_key(m)
+    msg = reponse_func()
+    encode_msg = encode_RSA(msg, e, n)
+    encode_msg = encode_message_RSA(b's', encode_msg, 10)
+    sock.send(encode_msg)
+    reponse_func()
 
-text = serv_mes.encode('utf-8')
-text = text.decode('utf-8')
-temp = []
-for i in text:
-    i = ord(i)
-    i = fast_power(i, int(e), int(n))
-    temp.append(int(i))
-print(temp)
+#bricolage à refaire
 
-
-#changer ord() 
-#changer l'algo de calc puissance 
-    
+def decrypt(sock, reponse_func, encoded_message):
+        sock.send(encoded_message)
+        reponse_func()
+        reponse_func()

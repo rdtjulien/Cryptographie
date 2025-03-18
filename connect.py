@@ -29,9 +29,9 @@ except Exception as e:
     print("Cannot connect to the server")
 
 M = b's'
-TASK = "shift"
+TASK = "RSA"
 TYPE = "encode"
-LENGTH = 20
+LENGTH = 10
 message = f"task {TASK} {TYPE} {LENGTH}"
 #message = "test"
 
@@ -47,14 +47,11 @@ else:
         shift.decode(sock, reponse, encoded_message)
     elif(TASK == "vigenere" and TYPE == "encode"):
         Vigenere.encode(sock, reponse, encoded_message)
+    elif(TASK == "vigenere" and TYPE == "decode"):
+        print()
     elif(TASK == "RSA" and TYPE == "encode"):
+        rsa.encrypt(sock, reponse, encoded_message)
+    elif(TASK == "RSA" and TYPE == "decode"):
         sock.send(encoded_message)
-        m = reponse()
-        mod = m.split('=')
-        n = mod[1]
-        e = mod[2]
-        print(n[:-3])
-        print(e)
-        text = reponse()
 
 sock.close()
