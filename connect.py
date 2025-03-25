@@ -8,7 +8,7 @@ import rsa
 #Fonction réponse
 def reponse():
     data = sock.recv(1024)
-    reponse = data.decode('utf-8').strip()
+    reponse = data.decode('utf-8', errors='ignore').strip()
     reponse = reponse.replace('\x00', '')
 
     if reponse.startswith("ISCs") or reponse.startswith("ISCt"):
@@ -29,7 +29,7 @@ except Exception as e:
     print("Cannot connect to the server")
 
 M = b's'
-TASK = "RSA"
+TASK = "vigenere"
 TYPE = "encode"
 LENGTH = 10
 message = f"task {TASK} {TYPE} {LENGTH}"
@@ -53,5 +53,10 @@ else:
         rsa.encrypt(sock, reponse, encoded_message)
     elif(TASK == "RSA" and TYPE == "decode"):
         sock.send(encoded_message)
+        reponse()
 
 sock.close()
+
+#Refaire les fonctions d'encode message
+#Enlever le length dans les construceteur
+#vigenere
