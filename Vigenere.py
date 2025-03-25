@@ -8,9 +8,9 @@ def byte_message(message: str):
 
     return b''.join(new_message)
 
-def encode_message_vigenere(m:bytes, message: str, length: int):
+def encode_message_vigenere(m:bytes, message: str):
     prefix = b'ISC'
-    length = length.to_bytes(2, 'big')
+    length = len(message).to_bytes(2, 'big')
     new_message = byte_message(message)
 
     return prefix + m + length + new_message
@@ -49,6 +49,6 @@ def encode(sock, reponse_func, encoded_message):
     serv_reponse = reponse_func()
     vigenere_message = encrypt_vigenere(serv_reponse, k)
     print(f"Vigenere message: {vigenere_message}")
-    vigenere_message = encode_message_vigenere(b's', vigenere_message, 10)
+    vigenere_message = encode_message_vigenere(b's', vigenere_message)
     sock.send(vigenere_message)
     serv_reponse = reponse_func()

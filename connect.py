@@ -29,11 +29,10 @@ except Exception as e:
     print("Cannot connect to the server")
 
 M = b's'
-TASK = "vigenere"
+TASK = "RSA"
 TYPE = "encode"
 LENGTH = 10
 message = f"task {TASK} {TYPE} {LENGTH}"
-#message = "test"
 
 encoded_message = send_message.encode_message(M, message)
 
@@ -43,20 +42,11 @@ if(M == b't'):
 else:
     if(TASK == "shift" and TYPE == "encode"):
         shift.encode(sock, reponse, encoded_message)
-    elif(TASK == "shift" and TYPE == "decode"):
-        shift.decode(sock, reponse, encoded_message)
     elif(TASK == "vigenere" and TYPE == "encode"):
         Vigenere.encode(sock, reponse, encoded_message)
-    elif(TASK == "vigenere" and TYPE == "decode"):
-        print()
     elif(TASK == "RSA" and TYPE == "encode"):
         rsa.encrypt(sock, reponse, encoded_message)
     elif(TASK == "RSA" and TYPE == "decode"):
-        sock.send(encoded_message)
-        reponse()
+        rsa.decrypt(sock, reponse, encoded_message)
 
 sock.close()
-
-#Refaire les fonctions d'encode message
-#Enlever le length dans les construceteur
-#vigenere

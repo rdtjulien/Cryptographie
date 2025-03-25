@@ -9,9 +9,9 @@ def byte_message(message: str):
 
     return b''.join(new_message)
 
-def encode_message_shift(m:bytes, message: str, length: int):
+def encode_message_shift(m:bytes, message: str):
     prefix = b'ISC'
-    length = length.to_bytes(2, 'big')
+    length = len(message).to_bytes(2, 'big')
     new_message = byte_message(message)
 
     return prefix + m + length + new_message
@@ -47,8 +47,7 @@ def encode(sock, reponse_func, encoded_message):
     k = shift_key(k)
     serv_reponse = reponse_func()
     shift_message = trans_shift(serv_reponse, int(k))
-    print(f"Shift message: {shift_message}")
-    shift_message = encode_message_shift(b's', shift_message, 10)
+    shift_message = encode_message_shift(b's', shift_message)
     sock.send(shift_message)
     serv_reponse = reponse_func() 
 

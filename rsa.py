@@ -1,4 +1,6 @@
 import send_message
+import json
+import math
 
 def power(base, expo, m):
    return pow(base,expo,m)
@@ -27,7 +29,6 @@ def byte_message(message: str):
 
     return b''.join(new_message)
 
-
 def encode_message_RSA(m:bytes, message: str, length: int):
     prefix = b'ISC'
     length = length.to_bytes(2, 'big')
@@ -50,3 +51,78 @@ def encrypt(sock, reponse_func, encoded_message):
 def decrypt(sock, reponse_func, encoded_message):
         sock.send(encoded_message)
         reponse_func()
+        m = "9845984,9023483"
+        n = 9845984
+        e = 9023483
+        length = len(m)
+        m = send_key(m)
+        m = encode_message_RSA(b's',m, length)
+        sock.send(m)
+        r = reponse_func()
+        p,q = p_q(n)
+        print(f"p et q {p,q}")
+        p_i = (p-1)*(q-1)
+        print(f"phi : {p_i}")
+        d = pow(e, -1, p_i)
+        print(d)
+        x = d_RSA(r, d, n)
+        print(x)
+        x = encode_message_RSA(b's', x, 10)
+        print(x)
+        sock.send(x)
+        reponse_func()
+
+
+def send_key(m: str):
+    temp = []
+    for i in m:
+        i = i.encode()
+        i = int.from_bytes(i)
+        temp.append(i)
+    return temp
+
+m = "9845984,9023483"
+n = 9845984
+e = 9023483
+code = "8ڠ`c►2ic↨&`K"
+
+n = len(m)
+
+l = send_key(m)
+v = encode_message_RSA(b's', l, n)
+
+print(v)
+
+
+def p_q(n):
+    for i in range(2, int(math.sqrt(n)) + 1):
+        if n % i == 0:
+            p = i
+            q = n // i
+            break
+    return p,q
+
+def d_RSA(m:str, d, n):
+    temp = []
+    for i in m:
+        i = i.encode()
+        i = int.from_bytes(i)
+        decode = pow(i, d,n)
+        temp.append(decode)
+    return temp
+
+n = 9845984
+e = 9023483
+code = "8ڠ`c►2ic↨&`K"
+
+p = 2
+q = 5
+
+p_i = (p-1)*(q-1) 
+print(p_i)
+
+d = pow(e, -1, p_i)
+print(d)
+
+x = d_RSA(code, d, n)
+print(x)
