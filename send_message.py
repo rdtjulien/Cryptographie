@@ -11,3 +11,7 @@ def encode_message(m:bytes, message: str):
     new_message = byte_message(message)
 
     return prefix + m + length + new_message
+
+
+#pyuic5 -x test.ui -o test.py
+#git reset --hard HEAD^
