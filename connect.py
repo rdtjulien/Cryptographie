@@ -30,7 +30,7 @@ except Exception as e:
 
 M = b's'
 TASK = "RSA"
-TYPE = "encode"
+TYPE = "decode"
 LENGTH = 10
 message = f"task {TASK} {TYPE} {LENGTH}"
 
