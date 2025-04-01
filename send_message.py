@@ -13,5 +13,9 @@ def encode_message(m:bytes, message: str):
     return prefix + m + length + new_message
 
 
+<<<<<<< HEAD
 #pyuic5 -x test.ui -o test.py
+=======
+#pyuic5 -x GUI_crypto_V3.ui -o GUI.py
+>>>>>>> 2db07dd56caf78cc8c3be64984e787b991733bbe
 #git reset --hard HEAD^
