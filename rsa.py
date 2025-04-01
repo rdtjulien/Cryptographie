@@ -38,7 +38,7 @@ def encode_message_RSA(m:bytes, message: str, length: int):
 
 def decode_message_RSA(m:bytes, message: str):
     prefix = b'ISC'
-    length = len(m).to_bytes(2, 'big')
+    length = len(message).to_bytes(2, 'big')
     new_message = byte_message(message)
 
     return prefix + m + length + new_message
@@ -62,11 +62,11 @@ def decrypt(sock, reponse_func, encoded_message):
         m = f"{n},{e}"
         m,length = send_key(m)
         m = encode_message_RSA(b's',m, length)
-        print(n,e,d)
         sock.send(m)
         r = reponse_func()
-        k = encode_RSA(r, d, n)
-        message = decode_message_RSA(b's', k)
+        r = encode_RSA(r, d, n)
+        print(r)
+        message = decode_message_RSA(b's', r)
         print(message)
         sock.send(message)
         reponse_func()
@@ -99,5 +99,3 @@ def generate_key(p:int, q:int):
     d = i
 
     return n,e,d
-
-
