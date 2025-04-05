@@ -30,12 +30,8 @@ except Exception as e:
 
 M = b's'
 TASK = "RSA"
-TYPE = "decode"
-<<<<<<< HEAD
-LENGTH = 3
-=======
-LENGTH = 10
->>>>>>> 2db07dd56caf78cc8c3be64984e787b991733bbe
+TYPE = "encode"
+LENGTH = 2
 message = f"task {TASK} {TYPE} {LENGTH}"
 
 encoded_message = send_message.encode_message(M, message)
