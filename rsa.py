@@ -1,6 +1,7 @@
 import send_message
 import json
 import math
+import random
 
 def power(base, expo, m):
    return pow(base,expo,m)
@@ -58,7 +59,8 @@ def encrypt(sock, reponse_func, encoded_message):
 def decrypt(sock, reponse_func, encoded_message):
         sock.send(encoded_message)
         reponse_func()
-        n,e,d = generate_key(7,19)
+        #p,q = generate_random_number(file_path)
+        n,e,d = generate_key(7,5)
         m = f"{n},{e}"
         m,length = send_key(m)
         m = encode_message_RSA(b's',m, length)
@@ -102,3 +104,9 @@ def generate_key(p:int, q:int):
 
     return n,e,d
 
+def generate_random_number(path: str):
+    with open(path, 'r') as file: 
+        lines = file.readlines()   
+    return random.choice(lines).strip(), random.choice(lines).strip() 
+
+file_path = "nombres_premiers.txt"

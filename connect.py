@@ -28,12 +28,13 @@ try:
 except Exception as e:
     print("Cannot connect to the server")
 
-M = b't'
-TASK = "RSA"
+M = b's'
+TASK = "DifHel"
 TYPE = "encode"
 LENGTH = 10
 message = f"task {TASK} {TYPE} {LENGTH}"
-message = f"Salut"
+message = f"task {TASK}"
+#message = f"Salut"
 
 encoded_message = send_message.encode_message(M, message)
 
@@ -49,5 +50,8 @@ else:
         rsa.encrypt(sock, reponse, encoded_message)
     elif(TASK == "RSA" and TYPE == "decode"):
         rsa.decrypt(sock, reponse, encoded_message)
+    elif(TASK == "DifHel"):
+        sock.send(encoded_message)
+        reponse()
 
 sock.close()
