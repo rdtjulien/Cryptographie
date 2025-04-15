@@ -1173,7 +1173,7 @@ QProgressBar::chunk
            <enum>Qt::DefaultContextMenu</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <property name="iconSize">
            <size>
@@ -1194,29 +1194,47 @@ QProgressBar::chunk
            <layout class="QGridLayout" name="gridLayout_5">
             <item row="0" column="0">
              <layout class="QGridLayout" name="gridLayout_3">
-              <item row="4" column="1">
+              <item row="5" column="1">
                <widget class="Line" name="line_8">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
                </widget>
               </item>
-              <item row="5" column="1">
+              <item row="1" column="1">
+               <widget class="QLabel" name="label_6">
+                <property name="font">
+                 <font>
+                  <pointsize>28</pointsize>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Shift</string>
+                </property>
+                <property name="scaledContents">
+                 <bool>true</bool>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="1">
                <widget class="QDialogButtonBox" name="buttonBox_2">
                 <property name="standardButtons">
                  <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
                 </property>
                </widget>
               </item>
-              <item row="4" column="0">
+              <item row="5" column="0">
                <widget class="Line" name="line_7">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
                </widget>
               </item>
-              <item row="3" column="0">
-               <spacer name="verticalSpacer_4">
+              <item row="1" column="0">
+               <spacer name="verticalSpacer_3">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
                 </property>
@@ -1228,7 +1246,33 @@ QProgressBar::chunk
                 </property>
                </spacer>
               </item>
-              <item row="2" column="1">
+              <item row="3" column="0">
+               <widget class="QDial" name="shift_select">
+                <property name="minimum">
+                 <number>-99</number>
+                </property>
+                <property name="maximum">
+                 <number>99</number>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0">
+               <widget class="QPlainTextEdit" name="plainTextEdit_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
                <widget class="QLCDNumber" name="shit_number">
                 <property name="frameShape">
                  <enum>QFrame::Box</enum>
@@ -1253,36 +1297,7 @@ QProgressBar::chunk
                 </property>
                </widget>
               </item>
-              <item row="0" column="0">
-               <spacer name="verticalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="5" column="0">
-               <widget class="QPlainTextEdit" name="plainTextEdit_2">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
+              <item row="4" column="1">
                <layout class="QVBoxLayout" name="verticalLayout">
                 <item>
                  <widget class="QPushButton" name="pushButton">
@@ -1300,31 +1315,23 @@ QProgressBar::chunk
                 </item>
                </layout>
               </item>
-              <item row="2" column="0">
-               <widget class="QDial" name="shift_select">
-                <property name="minimum">
-                 <number>-99</number>
+              <item row="4" column="0">
+               <spacer name="verticalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
                 </property>
-                <property name="maximum">
-                 <number>99</number>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
                 </property>
-               </widget>
+               </spacer>
               </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="label_6">
-                <property name="font">
-                 <font>
-                  <pointsize>28</pointsize>
-                 </font>
-                </property>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="pushButton_7">
                 <property name="text">
-                 <string>Shift</string>
-                </property>
-                <property name="scaledContents">
-                 <bool>true</bool>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <string>Task Shift encode</string>
                 </property>
                </widget>
               </item>
@@ -1339,87 +1346,7 @@ QProgressBar::chunk
            <layout class="QGridLayout" name="gridLayout_9">
             <item row="0" column="0">
              <layout class="QGridLayout" name="gridLayout_8">
-              <item row="5" column="0">
-               <widget class="QPlainTextEdit" name="plainTextEdit_3"/>
-              </item>
-              <item row="3" column="0">
-               <spacer name="verticalSpacer_5">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="4" column="1">
-               <widget class="Line" name="line_6">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QPlainTextEdit" name="plainTextEdit_4"/>
-              </item>
-              <item row="5" column="1">
-               <widget class="QDialogButtonBox" name="buttonBox_3">
-                <property name="standardButtons">
-                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="Line" name="line_5">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
-               <spacer name="verticalSpacer_6">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_2">
-                <property name="text">
-                 <string>Mot clé d'encodage</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
               <item row="1" column="1">
-               <widget class="QTextBrowser" name="textBrowser_2">
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QDialogButtonBox" name="buttonBox_4">
-                <property name="standardButtons">
-                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
                <widget class="QLabel" name="label_5">
                 <property name="font">
                  <font>
@@ -1437,6 +1364,93 @@ QProgressBar::chunk
                 </property>
                </widget>
               </item>
+              <item row="8" column="0">
+               <widget class="QPlainTextEdit" name="plainTextEdit_4"/>
+              </item>
+              <item row="9" column="0">
+               <spacer name="verticalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="10" column="0">
+               <widget class="Line" name="line_5">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="10" column="1">
+               <widget class="Line" name="line_6">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="11" column="0">
+               <widget class="QPlainTextEdit" name="plainTextEdit_3"/>
+              </item>
+              <item row="1" column="0">
+               <spacer name="verticalSpacer_6">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="11" column="1">
+               <widget class="QDialogButtonBox" name="buttonBox_3">
+                <property name="standardButtons">
+                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+                </property>
+               </widget>
+              </item>
+              <item row="8" column="1">
+               <widget class="QDialogButtonBox" name="buttonBox_4">
+                <property name="standardButtons">
+                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>Mot clé d'encodage</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QTextBrowser" name="textBrowser_2">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="pushButton_6">
+                <property name="text">
+                 <string>Task Vigenere encode</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
            </layout>
@@ -1448,7 +1462,14 @@ QProgressBar::chunk
            <layout class="QGridLayout" name="gridLayout_11">
             <item row="2" column="0">
              <layout class="QGridLayout" name="gridLayout_10">
-              <item row="4" column="0">
+              <item row="0" column="0">
+               <widget class="QPushButton" name="pushButton_4">
+                <property name="text">
+                 <string>Task RSA encode</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0">
                <widget class="QLabel" name="PublicKeyLabel">
                 <property name="text">
                  <string>Public Key</string>
@@ -1458,7 +1479,7 @@ QProgressBar::chunk
                 </property>
                </widget>
               </item>
-              <item row="8" column="1">
+              <item row="10" column="1">
                <widget class="QDialogButtonBox" name="buttonBox">
                 <property name="standardButtons">
                  <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
@@ -1466,13 +1487,6 @@ QProgressBar::chunk
                </widget>
               </item>
               <item row="2" column="0">
-               <widget class="QPushButton" name="pushButton_3">
-                <property name="text">
-                 <string>Task RSA decode</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
                <spacer name="verticalSpacer_2">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -1485,7 +1499,7 @@ QProgressBar::chunk
                 </property>
                </spacer>
               </item>
-              <item row="5" column="0">
+              <item row="7" column="0">
                <widget class="QLabel" name="PrivateKeyLabel">
                 <property name="text">
                  <string>Private Key</string>
@@ -1495,27 +1509,27 @@ QProgressBar::chunk
                 </property>
                </widget>
               </item>
-              <item row="7" column="1">
+              <item row="9" column="1">
                <widget class="Line" name="line_4">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
                </widget>
               </item>
-              <item row="4" column="1">
+              <item row="6" column="1">
                <widget class="QLCDNumber" name="lcdNumber_2">
                 <property name="digitCount">
                  <number>5</number>
                 </property>
                </widget>
               </item>
-              <item row="8" column="0">
+              <item row="10" column="0">
                <widget class="QPlainTextEdit" name="plainTextEdit"/>
               </item>
-              <item row="5" column="1">
+              <item row="7" column="1">
                <widget class="QLCDNumber" name="lcdNumber"/>
               </item>
-              <item row="0" column="1">
+              <item row="2" column="1">
                <widget class="QLabel" name="label_4">
                 <property name="font">
                  <font>
@@ -1533,7 +1547,7 @@ QProgressBar::chunk
                 </property>
                </widget>
               </item>
-              <item row="6" column="0">
+              <item row="8" column="0">
                <spacer name="verticalSpacer">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -1546,14 +1560,14 @@ QProgressBar::chunk
                 </property>
                </spacer>
               </item>
-              <item row="7" column="0">
+              <item row="9" column="0">
                <widget class="Line" name="line">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
                 </property>
                </widget>
               </item>
-              <item row="6" column="1">
+              <item row="8" column="1">
                <widget class="QPushButton" name="RSA_Key_button_generator">
                 <property name="text">
                  <string>Generate RSA Key</string>
@@ -1561,9 +1575,9 @@ QProgressBar::chunk
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QPushButton" name="pushButton_4">
+               <widget class="QPushButton" name="pushButton_3">
                 <property name="text">
-                 <string>Task RSA encode</string>
+                 <string>Task RSA decode</string>
                 </property>
                </widget>
               </item>
@@ -1578,7 +1592,41 @@ QProgressBar::chunk
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="0" column="0" rowspan="2" colspan="2">
              <layout class="QGridLayout" name="gridLayout_12">
-              <item row="2" column="0">
+              <item row="6" column="1">
+               <widget class="Line" name="line_10">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QLCDNumber" name="lcdNumber_4">
+                <property name="digitCount">
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="0">
+               <widget class="QPlainTextEdit" name="plainTextEdit_5"/>
+              </item>
+              <item row="7" column="1">
+               <widget class="QDialogButtonBox" name="buttonBox_5">
+                <property name="standardButtons">
+                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0">
+               <widget class="Line" name="line_9">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="1">
+               <widget class="QLCDNumber" name="lcdNumber_3"/>
+              </item>
+              <item row="4" column="0">
                <widget class="QLabel" name="PrivateKeyLabel_2">
                 <property name="text">
                  <string>Private Key</string>
@@ -1589,23 +1637,6 @@ QProgressBar::chunk
                </widget>
               </item>
               <item row="1" column="0">
-               <widget class="QLabel" name="PublicKeyLabel_2">
-                <property name="text">
-                 <string>Public Key</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="1">
-               <widget class="QDialogButtonBox" name="buttonBox_5">
-                <property name="standardButtons">
-                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0">
                <spacer name="verticalSpacer_8">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -1619,30 +1650,6 @@ QProgressBar::chunk
                </spacer>
               </item>
               <item row="5" column="0">
-               <widget class="QPlainTextEdit" name="plainTextEdit_5"/>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLCDNumber" name="lcdNumber_4">
-                <property name="digitCount">
-                 <number>5</number>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="Line" name="line_9">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="Line" name="line_10">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
                <spacer name="verticalSpacer_7">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -1655,17 +1662,24 @@ QProgressBar::chunk
                 </property>
                </spacer>
               </item>
-              <item row="2" column="1">
-               <widget class="QLCDNumber" name="lcdNumber_3"/>
+              <item row="3" column="0">
+               <widget class="QLabel" name="PublicKeyLabel_2">
+                <property name="text">
+                 <string>Public Key</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
               </item>
-              <item row="3" column="1">
+              <item row="5" column="1">
                <widget class="QPushButton" name="RSA_Key_button_generator_2">
                 <property name="text">
                  <string>Generate RSA Key</string>
                 </property>
                </widget>
               </item>
-              <item row="0" column="1">
+              <item row="1" column="1">
                <widget class="QLabel" name="label_3">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -1704,6 +1718,13 @@ QProgressBar::chunk
                 </property>
                 <property name="openExternalLinks">
                  <bool>false</bool>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QPushButton" name="pushButton_5">
+                <property name="text">
+                 <string>Task Diffie-Hellman</string>
                 </property>
                </widget>
               </item>

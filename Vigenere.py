@@ -1,20 +1,5 @@
 import send_message
 
-#Bricolage
-def byte_message(message: str):
-    new_message = []
-    for i in message:
-        new_message.append(i.to_bytes(4,'big'))
-
-    return b''.join(new_message)
-
-def encode_message_vigenere(m:bytes, message: str):
-    prefix = b'ISC'
-    length = len(message).to_bytes(2, 'big')
-    new_message = byte_message(message)
-
-    return prefix + m + length + new_message
-
 def get_key(key:str):
     key = key.split("shift-key ")
     return key[len(key)-1]
@@ -48,7 +33,8 @@ def encode(sock, reponse_func, encoded_message):
     k = get_key(k)
     serv_reponse = reponse_func()
     vigenere_message = encrypt_vigenere(serv_reponse, k)
-    print(f"Vigenere message: {vigenere_message}")
-    vigenere_message = encode_message_vigenere(b's', vigenere_message)
+    vigenere_message = send_message.encode_message(b's', vigenere_message)
     sock.send(vigenere_message)
     serv_reponse = reponse_func()
+
+#Ok

@@ -4,6 +4,8 @@ import shift
 import time
 import Vigenere
 import rsa
+import dh
+import hash
 
 #Fonction réponse
 def reponse():
@@ -28,14 +30,16 @@ try:
 except Exception as e:
     print("Cannot connect to the server")
 
-M = b's'
-TASK = "DifHel"
-TYPE = "encode"
+M = b't'
+TASK = "hash"
+TYPE = "hash"
 LENGTH = 10
 message = f"task {TASK} {TYPE} {LENGTH}"
 message = f"task {TASK}"
-#message = f"Salut"
+message = f"task {TASK} {TYPE}"
+message = f"Salut"
 
+message = send_message.message_to_int(message)
 encoded_message = send_message.encode_message(M, message)
 
 if(M == b't'):
@@ -51,7 +55,8 @@ else:
     elif(TASK == "RSA" and TYPE == "decode"):
         rsa.decrypt(sock, reponse, encoded_message)
     elif(TASK == "DifHel"):
-        sock.send(encoded_message)
-        reponse()
+        dh.decrypt(sock,reponse,encoded_message)
+    elif(TASK == "hash" and TYPE == "hash"):
+        hash.encrypt(sock,reponse, encoded_message)
 
 sock.close()

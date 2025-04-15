@@ -1,5 +1,4 @@
 import send_message
-import json
 import math
 import random
 
@@ -23,34 +22,13 @@ def encode_RSA(serv_mes:str, e, n):
         temp.append(i)
     return temp
 
-def byte_message(message: str):
-    new_message = []
-    for i in message:
-        new_message.append(i.to_bytes(4,'big'))
-
-    return b''.join(new_message)
-
-def encode_message_RSA(m:bytes, message: str, length: int):
-    prefix = b'ISC'
-    length = length.to_bytes(2, 'big')
-    new_message = byte_message(message)
-
-    return prefix + m + length + new_message
-
-def decode_message_RSA(m:bytes, message: str):
-    prefix = b'ISC'
-    length = len(message).to_bytes(2, 'big')
-    new_message = byte_message(message)
-
-    return prefix + m + length + new_message
-
 def encrypt(sock, reponse_func, encoded_message):
     sock.send(encoded_message)
     m = reponse_func()
     e, n = recup_key(m)
     msg = reponse_func()
     encode_msg = encode_RSA(msg, e, n)
-    encode_msg = encode_message_RSA(b's', encode_msg, 10)
+    encode_msg = send_message.encode_message(b's', encode_msg)
     print(encode_msg)
     sock.send(encode_msg)
     reponse_func()
@@ -63,12 +41,12 @@ def decrypt(sock, reponse_func, encoded_message):
         n,e,d = generate_key(7,5)
         m = f"{n},{e}"
         m,length = send_key(m)
-        m = encode_message_RSA(b's',m, length)
+        m = send_message.encode_message(b's',m)
         sock.send(m)
         r = reponse_func()
         r = encode_RSA(r, d, n)
         print(r)
-        message = decode_message_RSA(b's', r)
+        message = send_message.encode_message(b's', r)
         sock.send(message)
         reponse_func()
 
@@ -110,3 +88,7 @@ def generate_random_number(path: str):
     return random.choice(lines).strip(), random.choice(lines).strip() 
 
 file_path = "nombres_premiers.txt"
+
+#Encode Ok
+#Decode Non
+#Clée aléatoire
