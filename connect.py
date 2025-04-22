@@ -30,14 +30,14 @@ try:
 except Exception as e:
     print("Cannot connect to the server")
 
-M = b't'
-TASK = "shift"
+M = b's'
+TASK = "RSA"
 TYPE = "encode"
 LENGTH = 10
 message = f"task {TASK} {TYPE} {LENGTH}"
 #message = f"task {TASK}"
 #message = f"task {TASK} {TYPE}"
-message = f"Salut"
+#message = f"Salut"
 
 message = send_message.message_to_int(message)
 encoded_message = send_message.encode_message(M, message)

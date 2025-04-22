@@ -29,7 +29,6 @@ def encrypt(sock, reponse_func, encoded_message):
     msg = reponse_func()
     encode_msg = encode_RSA(msg, e, n)
     encode_msg = send_message.encode_message(b's', encode_msg)
-    print(encode_msg)
     sock.send(encode_msg)
     reponse_func()
 

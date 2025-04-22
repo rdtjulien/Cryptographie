@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1241</width>
-    <height>898</height>
+    <width>1237</width>
+    <height>889</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -1335,6 +1335,13 @@ QProgressBar::chunk
                 </property>
                </widget>
               </item>
+              <item row="0" column="1">
+               <widget class="QPushButton" name="pushButton_10">
+                <property name="text">
+                 <string>Clear chat</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </item>
            </layout>
@@ -1592,14 +1599,7 @@ QProgressBar::chunk
            <layout class="QGridLayout" name="gridLayout_2">
             <item row="0" column="0" rowspan="2" colspan="2">
              <layout class="QGridLayout" name="gridLayout_12">
-              <item row="6" column="1">
-               <widget class="Line" name="line_10">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
+              <item row="5" column="1">
                <widget class="QLCDNumber" name="lcdNumber_4">
                 <property name="digitCount">
                  <number>5</number>
@@ -1607,49 +1607,6 @@ QProgressBar::chunk
                </widget>
               </item>
               <item row="7" column="0">
-               <widget class="QPlainTextEdit" name="plainTextEdit_5"/>
-              </item>
-              <item row="7" column="1">
-               <widget class="QDialogButtonBox" name="buttonBox_5">
-                <property name="standardButtons">
-                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="0">
-               <widget class="Line" name="line_9">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QLCDNumber" name="lcdNumber_3"/>
-              </item>
-              <item row="4" column="0">
-               <widget class="QLabel" name="PrivateKeyLabel_2">
-                <property name="text">
-                 <string>Private Key</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <spacer name="verticalSpacer_8">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>40</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item row="5" column="0">
                <spacer name="verticalSpacer_7">
                 <property name="orientation">
                  <enum>Qt::Vertical</enum>
@@ -1662,24 +1619,51 @@ QProgressBar::chunk
                 </property>
                </spacer>
               </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="PublicKeyLabel_2">
-                <property name="text">
-                 <string>Public Key</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+              <item row="9" column="0">
+               <widget class="QPlainTextEdit" name="plainTextEdit_5"/>
+              </item>
+              <item row="9" column="1">
+               <widget class="QDialogButtonBox" name="buttonBox_5">
+                <property name="standardButtons">
+                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
                 </property>
                </widget>
               </item>
-              <item row="5" column="1">
+              <item row="8" column="1">
+               <widget class="Line" name="line_10">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <spacer name="verticalSpacer_8">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item row="8" column="0">
+               <widget class="Line" name="line_9">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item row="7" column="1">
                <widget class="QPushButton" name="RSA_Key_button_generator_2">
                 <property name="text">
                  <string>Generate RSA Key</string>
                 </property>
                </widget>
               </item>
-              <item row="1" column="1">
+              <item row="3" column="1">
                <widget class="QLabel" name="label_3">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -1721,10 +1705,47 @@ QProgressBar::chunk
                 </property>
                </widget>
               </item>
+              <item row="6" column="1">
+               <widget class="QLCDNumber" name="lcdNumber_3"/>
+              </item>
               <item row="0" column="0">
                <widget class="QPushButton" name="pushButton_5">
                 <property name="text">
                  <string>Task Diffie-Hellman</string>
+                </property>
+               </widget>
+              </item>
+              <item row="6" column="0">
+               <widget class="QLabel" name="PrivateKeyLabel_2">
+                <property name="text">
+                 <string>Private Key</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="QLabel" name="PublicKeyLabel_2">
+                <property name="text">
+                 <string>Public Key</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="pushButton_8">
+                <property name="text">
+                 <string>Task Hash hash</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QPushButton" name="pushButton_9">
+                <property name="text">
+                 <string>Task Hash verify</string>
                 </property>
                </widget>
               </item>
@@ -1792,7 +1813,7 @@ QProgressBar::chunk
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1241</width>
+     <width>1237</width>
      <height>22</height>
     </rect>
    </property>

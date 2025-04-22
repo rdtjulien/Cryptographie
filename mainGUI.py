@@ -7,6 +7,9 @@ import shift
 import Vigenere
 import connect
 import send_message
+import rsa
+import dh
+import hash
 
 M = b's'
 
@@ -18,19 +21,21 @@ class SocketListener(QtCore.QThread):
         self.sock = sock
         self.running = True
 
-    def run(self):
-        while self.running:
-            try:
-                data = self.sock.recv(1024)
-                if not data:
-                    continue
-                reponse = data.decode('utf-8', errors='ignore').strip().replace('\x00', '')
-                if reponse.startswith("ISCs") or reponse.startswith("ISCt"):
-                    reponse = reponse[5:]
-                self.new_response.emit(reponse)
-            except Exception as e:
-                print("Erreur de réception :", e)
-            time.sleep(0.25)
+#timer chat a revoir
+
+    #def run(self):
+    #    while self.running:
+    #        try:
+    #            data = self.sock.recv(1024)
+    #            if not data:
+    #                continue
+    #            reponse = data.decode('utf-8', errors='ignore').strip().replace('\x00', '')
+    #            if reponse.startswith("ISCs") or reponse.startswith("ISCt"):
+    #                reponse = reponse[5:]
+    #            self.new_response.emit(reponse)
+    #        except Exception as e:
+    #            print("Erreur de réception :", e)
+    #        time.sleep(0.25)
 
     def stop(self):
         self.running = False
@@ -45,63 +50,48 @@ class MainApp(QtWidgets.QMainWindow):
 
         self.socket_thread = SocketListener(sock)
         self.socket_thread.new_response.connect(self.afficher_reponse)
-        self.ui.pushButton_7.clicked.connect(self.task_shift)
-        self.ui.pushButton_6.clicked.connect(self.task_vigenere)
-        self.ui.pushButton_5.clicked.connect(self.task_dh)
-        self.ui.pushButton_4.clicked.connect(self.task_RSA_encode)
-        self.ui.pushButton_3.clicked.connect(self.task_RSA_decode)
+
+        self.ui.pushButton_7.clicked.connect(lambda: self.run_task("task shift encode 10", shift.encode))
+        self.ui.pushButton_6.clicked.connect(lambda: self.run_task("task vigenere encode 10", Vigenere.encode))
+        self.ui.pushButton_5.clicked.connect(lambda: self.run_task("task DifHel", dh.decrypt))
+        self.ui.pushButton_4.clicked.connect(lambda: self.run_task("task RSA encode 10", rsa.encrypt))
+        self.ui.pushButton_3.clicked.connect(lambda: self.run_task("task RSA decode 10", rsa.decrypt))
+        self.ui.pushButton_8.clicked.connect(lambda: self.run_task("task hash hash", hash.encrypt))
+        self.ui.pushButton_9.clicked.connect(lambda: self.run_task("task hash hash", hash.encrypt))  # changer 
+
+        self.ui.pushButton_10.clicked.connect(self.clear_chat)
 
         self.socket_thread.start()
 
-    def task_shift(self):
-        try:
-            TASK = "shift"
-            TYPE = "encode"
-            LENGTH = 10
-            message = f"task {TASK} {TYPE} {LENGTH}"
-            message_ints = send_message.message_to_int(message)
-            encoded_message = send_message.encode_message(M, message_ints)
-
-            #self.sock.sendall(encoded_message)
-
-            shift.encode(self.sock, self.afficher_reponse, encoded_message)
-
-        except Exception as e:
-            print("Erreur dans shift encode :", e)
-
-    def task_vigenere(self):
-        try:
-            TASK = "vigenere"
-            TYPE = "encode"
-            LENGTH = 10
-            message = f"task {TASK} {TYPE} {LENGTH}"
-            message_ints = send_message.message_to_int(message)
-            encoded_message = send_message.encode_message(M, message_ints)
-
-            #self.sock.sendall(encoded_message)
-
-            Vigenere.encode(self.sock, self.afficher_reponse, encoded_message)
-
-        except Exception as e:
-            print("Erreur dans shift encode :", e)
-
-    def task_RSA_encode(self):
-        print()
-    
-    def task_RSA_decode(self):
-        print()
-    
-    def task_dh(self):
-        print()
-
-    def task_hash_hash(self):
-        print()
-    
-    def task_hash_verify(self):
-        print()
+    def clear_chat(self):
+        self.ui.ChatDisplay.clear()
 
     def afficher_reponse(self, message):
+        self.last_response = message
         self.ui.ChatDisplay.append(f"Réponse serveur : {message}")
+
+    def reponse(self):
+        data = sock.recv(1024)
+        reponse = data.decode('utf-8', errors='ignore').strip().replace('\x00', '')
+
+        if reponse.startswith("ISCs") or reponse.startswith("ISCt"):
+            reponse = reponse[5:]
+
+        print(f"Réponse serveur : {reponse}")
+        self.last_response = reponse
+        self.ui.ChatDisplay.append(f"Réponse serveur : {reponse}")
+        return reponse
+
+    def get_last_response(self):
+        return self.last_response
+
+    def run_task(self, message: str, handler_func):
+        try:
+            message_ints = send_message.message_to_int(message)
+            encoded_message = send_message.encode_message(M, message_ints)
+            handler_func(self.sock, self.reponse, encoded_message)
+        except Exception as e:
+            print(f"Erreur dans la tâche '{message}': {e}")
 
     def closeEvent(self, event):
         self.socket_thread.stop()
