@@ -21,13 +21,15 @@ def add_ISC(m:bytes, message:str):
     
     return prefix + m + length + message
 
-s = "ue par les théologiens chrétiens. En réalité, les"
-s = send_message.message_to_int(s)
-s = send_message.byte_message(s)
-s = hashlib.sha256()
-s = s.digest()
-s = add_ISC(b's', s)
-print(s)
+#s = "ue par les théologiens chrétiens. En réalité, les"
+#s = send_message.message_to_int(s)
+#s = send_message.byte_message(s)
+#print(s)
+#s = hashlib.sha256()
+#s = s.digest()
+#s = add_ISC(b's', s)
+#print(s)
 
 
-#Hash hash fixe problème
+#Hash [hash] fix problème 
+#Hash [Verify] faire

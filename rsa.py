@@ -37,10 +37,10 @@ def encrypt(sock, reponse_func, encoded_message):
 def decrypt(sock, reponse_func, encoded_message):
         sock.send(encoded_message)
         reponse_func()
-        #p,q = generate_random_number(file_path)
-        n,e,d = generate_key(7,5)
+        p,q = generate_random_number(file_path)
+        n,e,d = generate_key(3,7)
         m = f"{n},{e}"
-        m,length = send_key(m)
+        m = send_message.message_to_int(m)
         m = send_message.encode_message(b's',m)
         sock.send(m)
         r = reponse_func()
@@ -49,18 +49,6 @@ def decrypt(sock, reponse_func, encoded_message):
         message = send_message.encode_message(b's', r)
         sock.send(message)
         reponse_func()
-
-def rdm_pq():
-    print()
-
-def send_key(m: str):
-    length = len(m)
-    temp = []
-    for i in m:
-        i = i.encode()
-        i = int.from_bytes(i)
-        temp.append(i)
-    return temp,length
 
 def generate_key(p:int, q:int):
     n = p * q
@@ -89,6 +77,9 @@ def generate_random_number(path: str):
 
 file_path = "nombres_premiers.txt"
 
+p,q = generate_random_number(file_path)
+
+
 #Encode Ok
-#Decode Non
-#Clée aléatoire
+#fix (refaire) decode et faire clée aléatoire
+#Refaire la fonction generate_key()

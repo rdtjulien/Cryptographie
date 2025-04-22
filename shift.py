@@ -20,24 +20,14 @@ def trans_shift(reponse: str, k: int):
 def encode(sock, reponse_func, encoded_message):
     sock.send(encoded_message)
     k = reponse_func()
+    print(k)
     k = shift_key(k)
+    print(k)
     serv_reponse = reponse_func()
     shift_message = trans_shift(serv_reponse, int(k))
     shift_message = send_message.encode_message(b's', shift_message)
     sock.send(shift_message)
+    print(shift_message)
     serv_reponse = reponse_func() 
-
-#Envoie au serveur pour le decodage
-def decode(sock, reponse_func, encoded_message):
-    sock.send(encoded_message)
-    reponse_func()
-    message_encoder = reponse_func()
-    shift_message = send_message.encode_message(message_encoder)
-    print(f"Shift message: {shift_message}")
-    shift_message = send_message.encode_message(b's', shift_message)
-    sock.send(shift_message)
-    reponse_func()
-
-
 
 #Ok

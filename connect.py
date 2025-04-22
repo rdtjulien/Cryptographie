@@ -31,12 +31,12 @@ except Exception as e:
     print("Cannot connect to the server")
 
 M = b't'
-TASK = "hash"
-TYPE = "hash"
+TASK = "shift"
+TYPE = "encode"
 LENGTH = 10
 message = f"task {TASK} {TYPE} {LENGTH}"
-message = f"task {TASK}"
-message = f"task {TASK} {TYPE}"
+#message = f"task {TASK}"
+#message = f"task {TASK} {TYPE}"
 message = f"Salut"
 
 message = send_message.message_to_int(message)
