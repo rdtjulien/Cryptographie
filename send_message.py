@@ -20,6 +20,9 @@ def message_to_int(m: str):
         temp.append(i)
     return temp
 
+def byte_to_string(message: bytes):
+    return message.decode('utf-8', errors='ignore')
+
 #pyuic5 -x GUI_crypto_V3.ui -o GUI.py
 #git reset --hard HEAD^
 

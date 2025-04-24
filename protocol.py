@@ -5,18 +5,18 @@ import random
 
 file_path = "nombres_premiers.txt"       
 
-def get_random_primes(n=2):
-    """
-    Récupère n nombres premiers aléatoires depuis le fichier.
-    Retourne une liste d'entiers.
-    """
-    with open(file_path, 'r') as f:
-        lines = [int(line.strip()) for line in f.readlines()]
-        return random.sample(lines, n)
+def generate_random_number(path: str):
+    with open(path, 'r') as file: 
+        lines = file.readlines()   
+    return random.choice(lines).strip(), random.choice(lines).strip() 
+    
+print(generate_random_number(file_path))
     
 
 
 # ========== ENVOI ==========
+def byte_to_string(message: bytes):
+    return message.decode('utf-8', errors='ignore')
 
 def str_to_int_list(message: str) -> list[int]:
     return [int.from_bytes(c.encode(), 'big') for c in message]

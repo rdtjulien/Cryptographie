@@ -31,7 +31,7 @@ except Exception as e:
     print("Cannot connect to the server")
 
 M = b's'
-TASK = "RSA"
+TASK = "shift"
 TYPE = "encode"
 LENGTH = 10
 message = f"task {TASK} {TYPE} {LENGTH}"
@@ -39,17 +39,16 @@ message = f"task {TASK} {TYPE} {LENGTH}"
 #message = f"task {TASK} {TYPE}"
 #message = f"Salut"
 
-message = protocol.message_to_int(message)
-encoded_message = protocol.encode_message(M, message)
+encoded_message = protocol.prepare_message(message, M)
 
 if(M == b't'):
     sock.send(encoded_message)
     reponse()
 else:
     if(TASK == "shift" and TYPE == "encode"):
-        shift.encode(sock, reponse, encoded_message)
+        shift.encode(sock, encoded_message)
     elif(TASK == "vigenere" and TYPE == "encode"):
-        Vigenere.encode(sock, reponse, encoded_message)
+        Vigenere.encode(sock, encoded_message)
     elif(TASK == "RSA" and TYPE == "encode"):
         rsa.encrypt(sock, reponse, encoded_message)
     elif(TASK == "RSA" and TYPE == "decode"):
