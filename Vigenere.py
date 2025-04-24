@@ -1,4 +1,4 @@
-import send_message
+import protocol
 
 def get_key(key:str):
     key = key.split("shift-key ")
@@ -33,7 +33,7 @@ def encode(sock, reponse_func, encoded_message):
     k = get_key(k)
     serv_reponse = reponse_func()
     vigenere_message = encrypt_vigenere(serv_reponse, k)
-    vigenere_message = send_message.encode_message(b's', vigenere_message)
+    vigenere_message = protocol.encode_message(b's', vigenere_message)
     sock.send(vigenere_message)
     serv_reponse = reponse_func()
 

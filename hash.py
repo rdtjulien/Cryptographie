@@ -1,12 +1,12 @@
-import send_message
+import protocol
 import hashlib
 
 def encrypt(sock, reponse_func, encoded_message):
     sock.send(encoded_message)
     reponse_func()
     r = reponse_func()
-    r = send_message.message_to_int(r)
-    r = send_message.encode_message(b's', r)
+    r = protocol.message_to_int(r)
+    r = protocol.encode_message(b's', r)
     m = hashlib.sha256()
     m = m.digest()
     r = add_ISC(b's', m)
@@ -22,8 +22,8 @@ def add_ISC(m:bytes, message:str):
     return prefix + m + length + message
 
 #s = "ue par les théologiens chrétiens. En réalité, les"
-#s = send_message.message_to_int(s)
-#s = send_message.byte_message(s)
+#s = protocol.message_to_int(s)
+#s = protocol.byte_message(s)
 #print(s)
 #s = hashlib.sha256()
 #s = s.digest()

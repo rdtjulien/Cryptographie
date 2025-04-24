@@ -1,5 +1,5 @@
 import re
-import send_message
+import protocol
 
 #Récupère le k
 def shift_key(reponse: str):
@@ -23,7 +23,7 @@ def encode(sock, reponse_func, encoded_message):
     key = shift_key(k)
     serv_reponse = reponse_func()
     shift_message = trans_shift(serv_reponse, int(key))
-    shift_message = send_message.encode_message(b's', shift_message)
+    shift_message = protocol.encode_message(b's', shift_message)
     sock.send(shift_message)
     serv_reponse = reponse_func() 
 #Ok

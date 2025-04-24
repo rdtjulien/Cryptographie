@@ -1102,3 +1102,9 @@ QProgressBar::chunk
 {
     background-color: #607cff;
 }
+
+QLCDNumber
+{
+	
+
+}

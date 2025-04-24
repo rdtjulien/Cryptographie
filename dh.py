@@ -1,4 +1,4 @@
-import send_message
+import protocol
 import random
 
 def generate_random_number(path: str):
@@ -17,19 +17,19 @@ def decrypt(sock, reponse_func, encoded_message):
         g = 5
         a = 4
         m = f"23,5"
-        m = send_message.message_to_int(m)
-        m = send_message.encode_message(b's',m)
+        m = protocol.message_to_int(m)
+        m = protocol.encode_message(b's',m)
         sock.send(m)
         reponse_func()
         r = reponse_func()
         half = half_key(p,g,a)
-        m = send_message.message_to_int(str(half))
-        m = send_message.encode_message(b's', m)
+        m = protocol.message_to_int(str(half))
+        m = protocol.encode_message(b's', m)
         sock.send(m)
         reponse_func()
         commun = clef(int(r),int(p),int(a))
-        m = send_message.message_to_int(str(commun))
-        m = send_message.encode_message(b's',m)
+        m = protocol.message_to_int(str(commun))
+        m = protocol.encode_message(b's',m)
         sock.send(m)
         reponse_func()
 

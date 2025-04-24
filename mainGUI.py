@@ -6,7 +6,7 @@ import time
 import shift
 import Vigenere
 import connect
-import send_message
+import protocol
 import rsa
 import dh
 import hash
@@ -87,8 +87,8 @@ class MainApp(QtWidgets.QMainWindow):
 
     def run_task(self, message: str, handler_func):
         try:
-            message_ints = send_message.message_to_int(message)
-            encoded_message = send_message.encode_message(M, message_ints)
+            message_ints = protocol.message_to_int(message)
+            encoded_message = protocol.encode_message(M, message_ints)
             handler_func(self.sock, self.reponse, encoded_message)
         except Exception as e:
             print(f"Erreur dans la tâche '{message}': {e}")

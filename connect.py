@@ -1,5 +1,5 @@
 import socket
-import send_message
+import protocol
 import shift
 import time
 import Vigenere
@@ -39,8 +39,8 @@ message = f"task {TASK} {TYPE} {LENGTH}"
 #message = f"task {TASK} {TYPE}"
 #message = f"Salut"
 
-message = send_message.message_to_int(message)
-encoded_message = send_message.encode_message(M, message)
+message = protocol.message_to_int(message)
+encoded_message = protocol.encode_message(M, message)
 
 if(M == b't'):
     sock.send(encoded_message)
