@@ -18,12 +18,11 @@ T = b't'
 class SocketListener(QtCore.QThread):
     new_response = QtCore.pyqtSignal(str)
 
-    def __init__(self, sock):
+    def __init__(self, sock, is_on_task_tab_callback):
         super().__init__()
         self.sock = sock
         self.running = True
-
-#timer chat a revoir
+        self.is_on_task_tab = is_on_task_tab_callback
 
     def run(self):
         while self.running:
@@ -37,13 +36,13 @@ class SocketListener(QtCore.QThread):
                 self.new_response.emit(reponse)
             except Exception as e:
                 print("Erreur de réception :", e)
-            time.sleep(0.25)
+            
+            if not self.is_on_task_tab():
+                time.sleep(0.25)
 
-    def closeEvent(self, event):
-        self.socket_thread.stop()
-        self.socket_thread.wait()
-        self.sock.close()
-        event.accept()
+    def stop(self):
+        self.running = False
+
 
 class MainApp(QtWidgets.QMainWindow):
     def __init__(self, sock):
@@ -52,15 +51,16 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.sock = sock
 
-        # Thread pour écouter les messages du serveur
-        self.socket_thread = SocketListener(sock)
+        self.on_task_tab = False
+        self.ui.tabtool_encoding.currentChanged.connect(self.on_tab_changed)
+
+        self.socket_thread = SocketListener(sock, lambda: self.on_task_tab)
         self.socket_thread.new_response.connect(self.afficher_reponse_chat_display)
-        
-        # Lier le bouton shift au handler
+
         self.ui.buttonBoxSend_shift.clicked.connect(self.envoyer_shift)
         self.ui.buttonBox_key_vigenere.clicked.connect(self.envoyer_vigenere_key)
+        self.ui.buttonBoxSend_vigenere.clicked.connect(self.envoyer_vigenere)
 
-        # Liens vers les autres boutons
         self.ui.pushButton_7.clicked.connect(lambda: self.run_task("task shift encode 10", shift.encode))
         self.ui.pushButton_6.clicked.connect(lambda: self.run_task("task vigenere encode 10", Vigenere.encode))
         self.ui.pushButton_5.clicked.connect(lambda: self.run_task("task DifHel", dh.decrypt))
@@ -72,26 +72,40 @@ class MainApp(QtWidgets.QMainWindow):
 
         self.socket_thread.start()
 
+    def on_tab_changed(self, index):
+        tab_name = self.ui.tabtool_encoding.tabText(index)
+        print(f"Onglet actuel : {tab_name}")
+        self.on_task_tab = (tab_name == "Task")
+
+
     def clear_chat_display(self):
         self.ui.ChatDisplay.clear()
 
     def afficher_reponse_chat_display(self, message):
         self.last_response = message
-
         current_widget = self.ui.tabtool_encoding.currentWidget()
         if current_widget == self.ui.tab_shift:
             try:
-                shift_value = self.ui.shit_number.value()  # récupère le décalage
+                shift_value = self.ui.shit_number.value()
                 decoded_ints = shift.trans_shift(message, int(-shift_value))
                 decoded_ints = send_message.byte_message(decoded_ints)
                 message_str = send_message.byte_to_string(decoded_ints)
-                self.ui.ChatDisplay.append(f"[Shift] {message_str}")
+                safe_message = message_str.encode('utf-8', errors='replace').decode('utf-8')
+                self.ui.ChatDisplay.append(f"[Shift] {safe_message}")
             except Exception as e:
                 print(f"Erreur déchiffrage shift : {e}")
                 self.ui.ChatDisplay.append(f"[Shift][Erreur] {message}")
+        elif current_widget == self.ui.tab_vigenere:
+            try:
+                key = self.vigenere_key
+                key = Vigenere.generate_key(message, self.vigenere_key)
+                print(message)
+                self.ui.ChatDisplay.append(f"[Vigenere] {key}")
+            except Exception as e:
+                print(f"Erreur déchiffrage Vigenere : {e}")
+                self.ui.ChatDisplay.append(f"[Vigenere][Erreur] {message}")
         else:
             self.ui.ChatDisplay.append(f"[Normal] {message}")
-
 
     def afficher_reponse_task(self, message):
         self.last_response = message
@@ -112,9 +126,9 @@ class MainApp(QtWidgets.QMainWindow):
 
     def run_task(self, message: str, handler_func):
         try:
-            message_ints = send_message.message_to_int(message)
-            encoded_message = send_message.encode_message(M, message_ints)
-            handler_func(self.sock, self.reponse, encoded_message)
+            message_ints = protocol.str_to_int_list(message)
+            encoded_message = protocol.wrap_message(message_ints,M)
+            handler_func(self.sock, encoded_message, self.reponse)
         except Exception as e:
             print(f"Erreur dans la tâche '{message}': {e}")
 
@@ -124,29 +138,41 @@ class MainApp(QtWidgets.QMainWindow):
             return
         try:
             shift_value = self.ui.shit_number.value()
-            print(shift_value)
-            message = texte
-            message = shift.trans_shift(str(message), int(shift_value))
+            message = shift.trans_shift(str(texte), int(shift_value))
+            print(message)
             encoded_message = send_message.encode_message(T, message)
+            print(encoded_message)
             self.sock.sendall(encoded_message)
         except Exception as e:
             print(f"Erreur lors de l'envoi du texte shift : {e}")
 
     def envoyer_vigenere_key(self):
         key = self.ui.plainTextEdit_key_vigenere.toPlainText().strip()
-
         if not key:
             return
         try:
             self.ui.textBrowser_key_vigenere.clear()
             self.ui.textBrowser_key_vigenere.append(f"Clé: {key}")
+            self.vigenere_key = key
         except Exception as e:
-            print(f"Erreur lors de l'envoie du texte vigenere: {e}")
+            print(f"Erreur lors de l'envoi de la clé vigenere: {e}")
+
+    def envoyer_vigenere(self):
+        texte = self.ui.plainTextEdit_vigenere.toPlainText().strip()
+        if not texte:
+            return
+        try:
+            key = Vigenere.generate_key(texte, self.vigenere_key)
+            message = Vigenere.encrypt_vigenere(texte, key)
+            encoded_message = send_message.encode_message(T, message)
+            self.sock.sendall(encoded_message)
+        except Exception as e:
+            print(f"Erreur lors de l'envoi du texte vigenere: {e}")
+
 
     def closeEvent(self, event):
         self.socket_thread.stop()
         event.accept()
-
 
 PORT = 6000
 ADDRESS = 'vlbelintrocrypto.hevs.ch'
@@ -156,7 +182,7 @@ try:
     sock.connect((ADDRESS, PORT))
     print("Connecté au serveur")
 except Exception as e:
-    print("Connexion échouée :", e)
+    print(f"Connexion échouée : {e}")
     sys.exit(1)
 
 if __name__ == "__main__":

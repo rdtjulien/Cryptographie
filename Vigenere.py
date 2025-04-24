@@ -27,15 +27,14 @@ def encrypt_vigenere(msg: str, key: str):
 
     return encrypted_text
 
-def encode(sock, encoded_message):
+def encode(sock, encoded_message, reponse):
     protocol.send(sock, encoded_message)
-    k = protocol.receive(sock)
-    print(k)
+    k = reponse()
     k = get_key(k)
-    serv_reponse = protocol.receive(sock)
+    serv_reponse = reponse()
     print(serv_reponse)
     vigenere_message = encrypt_vigenere(serv_reponse, k)
     vigenere_message = protocol.wrap_message(vigenere_message)
     protocol.send(sock, vigenere_message)
-    print(protocol.receive(sock))
+    reponse()
 #Ok

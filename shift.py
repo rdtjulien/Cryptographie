@@ -18,15 +18,13 @@ def trans_shift(reponse: str, k: int):
     return temp
 
 #Envoie au serveur pour l'encodage
-def encode(sock, encoded_message):
+def encode(sock, encoded_message, reponse):
     protocol.send(sock, encoded_message)
-    k = protocol.receive(sock)
-    print(k)
+    k = reponse()
     key = shift_key(k)
-    serv_reponse = protocol.receive(sock)
-    print(serv_reponse)
+    serv_reponse = reponse()
     shift_message = trans_shift(serv_reponse, int(key))
     shift_message = protocol.wrap_message(shift_message)
     protocol.send(sock, shift_message)
-    print(protocol.receive(sock))
+    reponse()
 #Ok
