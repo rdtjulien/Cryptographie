@@ -31,7 +31,7 @@ except Exception as e:
     print("Cannot connect to the server")
 
 M = b's'
-TASK = "vigenere"
+TASK = "shift"
 TYPE = "encode"
 LENGTH = 10
 message = f"task {TASK} {TYPE} {LENGTH}"
@@ -50,9 +50,9 @@ else:
     elif(TASK == "vigenere" and TYPE == "encode"):
         Vigenere.encode(sock, encoded_message, reponse)
     elif(TASK == "RSA" and TYPE == "encode"):
-        rsa.encrypt(sock, reponse, encoded_message)
+        rsa.encrypt(sock, encoded_message, reponse)
     elif(TASK == "RSA" and TYPE == "decode"):
-        rsa.decrypt(sock, reponse, encoded_message)
+        rsa.decrypt(sock, encoded_message, reponse)
     elif(TASK == "DifHel"):
         dh.decrypt(sock,reponse,encoded_message)
     elif(TASK == "hash" and TYPE == "hash"):

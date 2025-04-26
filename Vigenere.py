@@ -37,4 +37,17 @@ def encode(sock, encoded_message, reponse):
     vigenere_message = protocol.wrap_message(vigenere_message)
     protocol.send(sock, vigenere_message)
     reponse()
+
+    
+def decrypt_vigenere(msg: bytes, key: str):
+    decrypted_text = []
+    key = generate_key(msg.decode(), key)
+
+    for i in range(len(msg)):
+        char = msg[i]
+        key_char = key[i].encode()[0]
+        decrypted_char = (char - key_char) % 256
+        decrypted_text.append(decrypted_char)
+
+    return bytes(decrypted_text)
 #Ok

@@ -1,5 +1,6 @@
 import socket
 import random
+import time
 
 # ========= Données communes =========
 
@@ -9,8 +10,31 @@ def generate_random_number(path: str):
     with open(path, 'r') as file: 
         lines = file.readlines()   
     return random.choice(lines).strip(), random.choice(lines).strip() 
+
+
+def is_primitive_root(g, p):
+    required = set()
+    for i in range(1, p):
+        required.add(pow(g, i, p))
+    return len(required) == p - 1
+
+def generate_random_number_dh(path: str):
+    with open(path, 'r') as file:
+        lignes = file.readlines()
+        nombres = [int(l.strip()) for l in lignes if l.strip().isdigit()]
     
-print(generate_random_number(file_path))
+    petits_p = [n for n in nombres if n < 5000]
+
+    if not petits_p:
+        raise ValueError("Aucun nombre premier < 5000 dans le fichier.")
+
+    while True:
+        p = random.choice(petits_p)
+        racines_possibles = [g for g in range(2, p) if is_primitive_root(g, p)]
+        if racines_possibles:
+            g = random.choice(racines_possibles)
+            return p, g
+
     
 
 
@@ -65,3 +89,16 @@ def receive(sock: socket.socket) -> str:
     except Exception as e:
         print(f"[Erreur de réception] : {e}")
         return ""
+
+# ========================
+# Chrono
+# ========================
+
+
+def chrono(label, func, *args, **kwargs):
+    print(f"▶️ Début : {label}")
+    start = time.time()
+    result = func(*args, **kwargs)
+    end = time.time()
+    print(f"⏱️ {label} terminé en {end - start:.4f} secondes\n")
+    return result

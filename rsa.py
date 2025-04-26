@@ -35,7 +35,7 @@ def encode_RSA(message: str, e, n):
 # Envoi du message chiffré
 # ========================
 
-def encrypt(sock, reponse_func, encoded_message):
+def encrypt(sock, encoded_message, reponse_func):
     """
     Étapes :
     1. Envoie la commande au serveur pour déclencher RSA.

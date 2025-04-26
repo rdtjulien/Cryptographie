@@ -25,7 +25,3 @@ def byte_to_string(message: bytes):
 
 #pyuic5 -x GUI_crypto_V3.ui -o GUI.py
 #git reset --hard HEAD^
-
-'''''
-Ajouter dans le GUI le choix du port
-'''''

@@ -1,45 +1,29 @@
 import protocol
 import random
 
-def generate_random_number(path: str):
-    with open(path, 'r') as file: 
-        lines = file.readlines()   
-    return random.choice(lines).strip(), random.choice(lines).strip() 
+def decrypt(sock, encoded_message, reponse_func):
+    protocol.send(sock, encoded_message)
+    reponse_func()
 
-file_path = "nombres_premiers.txt"
+    # Clés DH locales
+    p, g = protocol.generate_random_number_dh(protocol.file_path)
+    print(f"p= {p}, g= {g}")
+    a = random.randint(2, 50)
 
-p,g = generate_random_number(file_path)
+    # Envoie p, g
+    msg = f"{p},{g}"
+    protocol.send(sock, protocol.prepare_message(msg))
+    reponse_func()
 
-def decrypt(sock, reponse_func, encoded_message):
-        protocol.send(sock,encoded_message)
-        print(protocol.receive(sock))
-        p = 23
-        g = 5
-        a = 4
-        m = f"23,5"
-        m = protocol.str_to_int_list(m)
-        m = protocol.wrap_message(b's',m)
-        print(protocol.send(sock,m))
-        protocol.receive(sock)
-        r = protocol.receive(sock)
-        print(r)
-        half = half_key(p,g,a)
-        m = protocol.str_to_int_list(str(half))
-        m = protocol.wrap_message(b's', m)
-        protocol.send(sock, m)
-        print(protocol.receive(sock))
-        commun = clef(int(r),int(p),int(a))
-        m = protocol.str_to_int_list(str(commun))
-        m = protocol.wrap_message(b's',m)
-        protocol.send(sock,m)
-        print(protocol.receive(sock))
+    # Reçoit moitié de clé B
+    B = int(reponse_func())
 
-def half_key(p: int, g: int, a: int):
-     return pow(g,a,p)
+    # Envoie moitié de clé A
+    A = pow(int(g), int(a), int(p))
+    protocol.send(sock, protocol.prepare_message(str(A)))
+    reponse_func()
 
-def clef(number: int, p: int, a: int):
-    return pow(number, a, p)
-
-
-#DH Ok
-#Faire les randoms keys
+    # Calcule la clé partagée
+    shared = pow(int(B), int(a), int(p))
+    protocol.send(sock, protocol.prepare_message(str(shared)))
+    reponse_func()

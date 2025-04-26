@@ -17,6 +17,13 @@ def trans_shift(reponse: str, k: int):
         temp.append(i)
     return temp
 
+def trans_shift_bytes(reponse: bytes, k: int):
+    temp = []
+    for i in reponse:
+        i = (i + k) % 256
+        temp.append(i)
+    return temp
+
 #Envoie au serveur pour l'encodage
 def encode(sock, encoded_message, reponse):
     protocol.send(sock, encoded_message)
@@ -28,3 +35,4 @@ def encode(sock, encoded_message, reponse):
     protocol.send(sock, shift_message)
     reponse()
 #Ok
+
