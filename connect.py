@@ -19,43 +19,44 @@ def reponse():
     print(f"Réponse serveur : {reponse}")
     return reponse
 
-# Partie connection serveur
-PORT = 6000
-ADDRESS = 'vlbelintrocrypto.hevs.ch'
-
+## Partie connection serveur
+#PORT = 6000
+#ADDRESS = 'vlbelintrocrypto.hevs.ch'
+#
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-try:
-    sock.connect((ADDRESS, PORT))
-    print("Connected")
-except Exception as e:
-    print("Cannot connect to the server")
-
-M = b's'
-TASK = "shift"
-TYPE = "encode"
-LENGTH = 10
-message = f"task {TASK} {TYPE} {LENGTH}"
-#message = f"task {TASK}"
-#message = f"task {TASK} {TYPE}"
-#message = f"Salut"
-
-encoded_message = protocol.prepare_message(message, M)
-
-if(M == b't'):
-    sock.send(encoded_message)
-    reponse()
-else:
-    if(TASK == "shift" and TYPE == "encode"):
-        shift.encode(sock, encoded_message, reponse)
-    elif(TASK == "vigenere" and TYPE == "encode"):
-        Vigenere.encode(sock, encoded_message, reponse)
-    elif(TASK == "RSA" and TYPE == "encode"):
-        rsa.encrypt(sock, encoded_message, reponse)
-    elif(TASK == "RSA" and TYPE == "decode"):
-        rsa.decrypt(sock, encoded_message, reponse)
-    elif(TASK == "DifHel"):
-        dh.decrypt(sock,reponse,encoded_message)
-    elif(TASK == "hash" and TYPE == "hash"):
-        hash.encrypt(sock,reponse, encoded_message)
-
-sock.close()
+#try:
+#    sock.connect((ADDRESS, PORT))
+#    print("Connected")
+#except Exception as e:
+#    print("Cannot connect to the server")
+#
+#M = b's'
+#TASK = "shift"
+#TYPE = "encode"
+#LENGTH = 10
+#message = f"task {TASK} {TYPE} {LENGTH}"
+##message = f"task {TASK}"
+##message = f"task {TASK} {TYPE}"
+##message = f"Salut"
+#
+#encoded_message = protocol.prepare_message(message, M)
+#
+##if(M == b't'):
+##    sock.send(encoded_message)
+##    reponse()
+##else:
+##    if(TASK == "shift" and TYPE == "encode"):
+##        shift.encode(sock, encoded_message, reponse)
+##    elif(TASK == "vigenere" and TYPE == "encode"):
+##        Vigenere.encode(sock, encoded_message, reponse)
+##    elif(TASK == "RSA" and TYPE == "encode"):
+##        rsa.encrypt(sock, encoded_message, reponse)
+##    elif(TASK == "RSA" and TYPE == "decode"):
+##        rsa.decrypt(sock, encoded_message, reponse)
+##    elif(TASK == "DifHel"):
+##        dh.decrypt(sock,reponse,encoded_message)
+##    elif(TASK == "hash" and TYPE == "hash"):
+##        hash.encrypt(sock,reponse, encoded_message)
+#
+#sock.close()
+#

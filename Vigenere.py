@@ -1,4 +1,5 @@
 import protocol
+import send_message
 
 def get_key(key:str):
     key = key.split("shift-key ")
@@ -38,16 +39,15 @@ def encode(sock, encoded_message, reponse):
     protocol.send(sock, vigenere_message)
     reponse()
 
-    
 def decrypt_vigenere(msg: bytes, key: str):
     decrypted_text = []
-    key = generate_key(msg.decode(), key)
-
-    for i in range(len(msg)):
-        char = msg[i]
+    msg_ints = [b for b in msg if b != 0]
+    key = generate_key(msg_ints, key)
+    
+    for i in range(len(msg_ints)):
+        char = msg_ints[i]
         key_char = key[i].encode()[0]
         decrypted_char = (char - key_char) % 256
         decrypted_text.append(decrypted_char)
 
     return bytes(decrypted_text)
-#Ok

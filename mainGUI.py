@@ -28,19 +28,20 @@ class SocketListener(QtCore.QThread):
     def run(self):
         while self.running:
             try:
-                data = self.sock.recv(1024)
-                if not data:
-                    continue
-                self.new_response_bytes.emit(data)
-                reponse = data.decode('utf-8', errors='ignore').strip().replace('\x00', '')
-                if reponse.startswith("ISCs") or reponse.startswith("ISCt"):
-                    reponse = reponse[5:]
-                self.new_response.emit(reponse)
+                if self.is_on_task_tab():
+                    time.sleep(0.05)
+                else:
+                    data = self.sock.recv(1024)
+                    if not data:
+                        continue
+                    self.new_response_bytes.emit(data)
+                    reponse = data.decode('utf-8', errors='ignore').strip().replace('\x00', '')
+                    if reponse.startswith("ISCs") or reponse.startswith("ISCt"):
+                        reponse = reponse[5:]
+                    self.new_response.emit(reponse)
+                time.sleep(0.25)
             except Exception as e:
                 print("Erreur de réception :", e)
-            
-            if not self.is_on_task_tab():
-                time.sleep(0.25)
 
     def stop(self):
         self.running = False
@@ -59,21 +60,21 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.pushButton_normal.clicked.connect(self.envoyer_normal)
         self.ui.pushButton_shift_key.clicked.connect(self.envoyer_key_shift)
         self.ui.pushButton_shift.clicked.connect(self.envoyer_shift)
-        self.ui.buttonBox_key_vigenere.clicked.connect(self.envoyer_vigenere_key)
-        self.ui.buttonBoxSend_vigenere.clicked.connect(self.envoyer_vigenere)
+        self.ui.pushButton_vigenere_key.clicked.connect(self.envoyer_vigenere_key)
+        self.ui.pushButton_vigenere.clicked.connect(self.envoyer_vigenere)
         self.ui.pushButton_port.clicked.connect(self.connect_to_server)
-
 
         self.vigenere_key = None
 
-        self.ui.pushButton_7.clicked.connect(lambda: self.run_task("task shift encode 10", shift.encode))
-        self.ui.pushButton_6.clicked.connect(lambda: self.run_task("task vigenere encode 10", Vigenere.encode))
-        self.ui.pushButton_5.clicked.connect(lambda: self.run_task("task DifHel", dh.decrypt))
-        self.ui.pushButton_4.clicked.connect(lambda: self.run_task("task RSA encode 10", rsa.encrypt))
-        self.ui.pushButton_3.clicked.connect(lambda: self.run_task("task RSA decode 10", rsa.decrypt))
-        self.ui.pushButton_8.clicked.connect(lambda: self.run_task("task hash hash", hash.encrypt))
-        self.ui.pushButton_9.clicked.connect(lambda: self.run_task("task hash hash", hash.encrypt))
+        self.ui.pushButton_shift_task.clicked.connect(lambda: self.run_task("task shift encode 10", shift.encode))
+        self.ui.pushButton_vigenere_task.clicked.connect(lambda: self.run_task("task vigenere encode 10", Vigenere.encode))
+        self.ui.pushButton_dh_task.clicked.connect(lambda: self.run_task("task DifHel", dh.decrypt))
+        self.ui.pushButton_RSA_encode_task.clicked.connect(lambda: self.run_task("task RSA encode 10", rsa.encrypt))
+        self.ui.pushButton_RSA_decode_task.clicked.connect(lambda: self.run_task("task RSA decode 10", rsa.decrypt))
+        self.ui.pushButton_hash_hash_task.clicked.connect(lambda: self.run_task("task hash hash", hash.encrypt))
+        self.ui.pushButton_hash_verify_task.clicked.connect(lambda: self.run_task("task hash hash", hash.encrypt))
         self.ui.pushButton_clear.clicked.connect(self.clear_chat_display)
+        self.ui.pushButton_clear_2.clicked.connect(self.clear_chat_display)
 
     def on_tab_changed(self, index):
         tab_name = self.ui.tabtool_encoding.tabText(index)
@@ -105,10 +106,9 @@ class MainApp(QtWidgets.QMainWindow):
                 self.ui.ChatDisplay.append(f"[Shift][Erreur] {message}")
         elif current_widget == self.ui.tab_vigenere:
             try:
-                key = self.vigenere_key
-                key = Vigenere.generate_key(self.last_response_bytes, self.vigenere_key)
-                message = Vigenere.decrypt_vigenere(message, key)
-                message = send_message.encode_message(T, message)
+                message = Vigenere.decrypt_vigenere(self.last_response_bytes, self.vigenere_key)
+                message = send_message.byte_message(message)
+                message = send_message.byte_to_string(message)
                 self.ui.ChatDisplay.append(f"[Vigenere] {message}")
             except Exception as e:
                 print(f"Erreur déchiffrage Vigenere : {e}")
@@ -179,20 +179,19 @@ class MainApp(QtWidgets.QMainWindow):
             self.ui.plainTextEdit_shift.clear()
             shift_value = self.ui.lcdNumber_3.value()
             message = shift.trans_shift(str(texte), int(shift_value))
-            print(message)
             encoded_message = send_message.encode_message(T, message)
-            print(encoded_message)
             self.sock.sendall(encoded_message)
         except Exception as e:
             print(f"Erreur lors de l'envoi du texte shift : {e}")
 
     def envoyer_vigenere_key(self):
-        key = self.ui.plainTextEdit_key_vigenere.toPlainText().strip()
+        key = self.ui.plainTextEdit_vigenere_key.toPlainText().strip()
         if not key:
             return
         try:
-            self.ui.textBrowser_key_vigenere.clear()
-            self.ui.textBrowser_key_vigenere.append(f"Clé: {key}")
+            self.ui.plainTextEdit_vigenere_key.clear()
+            self.ui.textBrowser_vigenere_key.clear()
+            self.ui.textBrowser_vigenere_key.append(f"Clé: {key}")
             self.vigenere_key = key
         except Exception as e:
             print(f"Erreur lors de l'envoi de la clé vigenere: {e}")
@@ -203,6 +202,7 @@ class MainApp(QtWidgets.QMainWindow):
         if not texte:
             return
         try:
+            self.ui.plainTextEdit_vigenere.clear()
             key = Vigenere.generate_key(texte, key)
             message = Vigenere.encrypt_vigenere(texte, key)
             encoded_message = send_message.encode_message(T, message)
