@@ -1,35 +1,37 @@
-import protocol
+import send_message
 import hashlib
+import protocol
 
-def encrypt(sock, reponse_func, encoded_message):
+
+def hash(sock, encoded_message, reponse_func):
     sock.send(encoded_message)
     reponse_func()
     r = reponse_func()
-    r = protocol.message_to_int(r)
-    r = protocol.encode_message(b's', r)
-    m = hashlib.sha256()
-    m = m.digest()
-    r = add_ISC(b's', m)
-    print(r)
-    sock.send(r)
+    m = hashlib.sha256(r.encode('utf-8')).hexdigest()
+    hash_bytes = str(m)
+    hash_int = send_message.message_to_int(hash_bytes)
+    final_message = send_message.encode_message(b's', hash_int)
+    sock.sendall(final_message)
     reponse_func()
 
-def add_ISC(m:bytes, message:str):
-    length = len(message)
-    prefix = b'ISC'
-    length = length.to_bytes(2, 'big')
+
+def verify(sock, encoded_message, reponse_func):
+    sock.send(encoded_message)
+    reponse_func()
+    r = reponse_func()
+    texte = separer_texte(r)
+    hash_texte = hashlib.sha256(texte[0].encode('utf-8')).hexdigest()
+
+    if hash_texte == texte[1]:
+        rep = "true"
+    else :
+        rep = "false"
+    d = send_message.message_to_int(rep)
+    d = send_message.encode_message(b's', d)
+    sock.send(d)
+    reponse_func()
+
+def separer_texte(chaine):
+    texte_separe = chaine.split("ISCs@")
     
-    return prefix + m + length + message
-
-#s = "ue par les théologiens chrétiens. En réalité, les"
-#s = protocol.message_to_int(s)
-#s = protocol.byte_message(s)
-#print(s)
-#s = hashlib.sha256()
-#s = s.digest()
-#s = add_ISC(b's', s)
-#print(s)
-
-
-#Hash [hash] fix problème 
-#Hash [Verify] faire
+    return texte_separe

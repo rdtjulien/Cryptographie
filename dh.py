@@ -7,7 +7,6 @@ def decrypt(sock, encoded_message, reponse_func):
 
     # Clés DH locales
     p, g = protocol.generate_random_number_dh(protocol.file_path)
-    print(f"p= {p}, g= {g}")
     a = random.randint(2, 50)
 
     # Envoie p, g

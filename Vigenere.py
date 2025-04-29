@@ -33,7 +33,6 @@ def encode(sock, encoded_message, reponse):
     k = reponse()
     k = get_key(k)
     serv_reponse = reponse()
-    print(serv_reponse)
     vigenere_message = encrypt_vigenere(serv_reponse, k)
     vigenere_message = protocol.wrap_message(vigenere_message)
     protocol.send(sock, vigenere_message)

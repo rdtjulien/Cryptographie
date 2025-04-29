@@ -70,9 +70,8 @@ class MainApp(QtWidgets.QMainWindow):
         self.ui.pushButton_vigenere_task.clicked.connect(lambda: self.run_task("task vigenere encode 10", Vigenere.encode))
         self.ui.pushButton_dh_task.clicked.connect(lambda: self.run_task("task DifHel", dh.decrypt))
         self.ui.pushButton_RSA_encode_task.clicked.connect(lambda: self.run_task("task RSA encode 10", rsa.encrypt))
-        self.ui.pushButton_RSA_decode_task.clicked.connect(lambda: self.run_task("task RSA decode 10", rsa.decrypt))
-        self.ui.pushButton_hash_hash_task.clicked.connect(lambda: self.run_task("task hash hash", hash.encrypt))
-        self.ui.pushButton_hash_verify_task.clicked.connect(lambda: self.run_task("task hash hash", hash.encrypt))
+        self.ui.pushButton_hash_hash_task.clicked.connect(lambda: self.run_task("task hash hash", hash.hash))
+        self.ui.pushButton_hash_verify_task.clicked.connect(lambda: self.run_task("task hash verify", hash.verify))
         self.ui.pushButton_clear.clicked.connect(self.clear_chat_display)
         self.ui.pushButton_clear_2.clicked.connect(self.clear_chat_display)
 
@@ -125,7 +124,6 @@ class MainApp(QtWidgets.QMainWindow):
         reponse = data.decode('utf-8', errors='ignore').strip().replace('\x00', '')
         if reponse.startswith("ISCs") or reponse.startswith("ISCt"):
             reponse = reponse[5:]
-        print(f"Réponse serveur : {reponse}")
         self.last_response = reponse
         self.ui.chatTask.append(f"Réponse serveur : {reponse}")
         return reponse
@@ -143,6 +141,7 @@ class MainApp(QtWidgets.QMainWindow):
             message_ints = protocol.str_to_int_list(message)
             encoded_message = protocol.wrap_message(message_ints,M)
             handler_func(self.sock, encoded_message, self.reponse)
+            self.ui.ChatDisplay.clear()
         except Exception as e:
             print(f"Erreur dans la tâche '{message}': {e}")
 
